@@ -30,7 +30,19 @@
                     android:layout_marginTop="0dp"
                     app:mapbox_uiLogoGravity="right|top"
                     mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets"
-                    mapbox:mapbox_cameraZoom="11"/>
+                    mapbox:mapbox_cameraZoom="11">
+                <TextView
+                        android:text=""
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView2"
+                        android:editable="false"
+                        android:layout_gravity="bottom|right"
+                        android:textAlignment="center"
+                        android:background="@color/colorPrimary"
+                        android:textColor="#ffffff"
+                        android:textSize="22sp"/>
+            </com.mapbox.mapboxsdk.maps.MapView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <Button
                 android:text="ADD"
@@ -40,7 +52,8 @@
                 android:id="@+id/button_ok"
                 android:layout_marginTop="75dp"
                 android:layout_gravity="top|end"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/Widget.AppCompat.Button.Colored"/>
         <Button
                 android:text="CLEAR"
                 android:layout_marginTop="75dp"
@@ -49,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:id="@+id/button_clear"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/Widget.AppCompat.Button.Colored"/>
         <Button
                 android:text="STOP POLLING"
                 android:layout_marginTop="75dp"
@@ -58,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center"
                 android:id="@+id/button_stop"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/Widget.AppCompat.Button.Colored"/>
 
         <RelativeLayout
                 android:id="@+id/progress"

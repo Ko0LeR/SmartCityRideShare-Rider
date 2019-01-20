@@ -118,6 +118,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$androidxTestVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
     testImplementation "junit:junit:$junitVersion"
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
 

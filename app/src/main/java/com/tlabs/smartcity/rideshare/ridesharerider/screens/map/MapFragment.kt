@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -32,13 +33,14 @@ import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.tlabs.smartcity.rideshare.ridesharerider.R
+import com.tlabs.smartcity.rideshare.ridesharerider.api.BackendApi
 import com.tlabs.smartcity.rideshare.ridesharerider.databinding.MapFrafmentBinding
 import com.tlabs.smartcity.rideshare.ridesharerider.util.ScopedFragment
 import kotlinx.android.synthetic.main.map_frafment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.longToast
-import java.lang.Exception
 
 class MapFragment : ScopedFragment() {
 
@@ -124,7 +126,21 @@ class MapFragment : ScopedFragment() {
                         drawNavigationPolylineRoute(viewModel.buildRoute())
                     }
                 }
+            }
 
+            launch(Dispatchers.IO) {
+                val txView = view.findViewById<TextView>(R.id.textView2)
+                repeat(Int.MAX_VALUE) {
+                    try {
+                        val balance = BackendApi.instance.getBalance().await()
+                        launch(Dispatchers.Main) {
+                            txView.text = "Balance: ${(balance.balance / 10e15)} ETH"
+                        }
+                        delay(2000)
+                    } catch (e: Exception) {
+                        Log.e("MapFragment", "Get balance error!")
+                    }
+                }
             }
         }
     }

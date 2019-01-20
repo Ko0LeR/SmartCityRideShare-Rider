@@ -5,18 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.tlabs.smartcity.rideshare.ridesharerider.screens.match.MatchViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MatchViewModel by lazy {
-        ViewModelProviders.of(this).get(MatchViewModel::class.java)
-    }
 
     lateinit var drawerLayout: DrawerLayout
 
@@ -40,12 +35,6 @@ class MainActivity : AppCompatActivity() {
         // Set up navigation menu
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
-        val intent = intent
-        if ("MATCH" == intent.getStringExtra("fragment")) {
-            viewModel.msg = intent.getStringExtra("msg")
-            navController.navigate(R.id.matchFragment)
-        }
-
     }
 
 

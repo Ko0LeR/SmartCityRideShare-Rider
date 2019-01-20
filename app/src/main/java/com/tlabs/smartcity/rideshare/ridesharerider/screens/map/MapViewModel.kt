@@ -18,9 +18,7 @@ import com.tlabs.smartcity.rideshare.ridesharerider.util.ScopedViewModel
 import kotlinx.android.synthetic.main.map_frafment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.http.HttpMethod
 import org.jetbrains.anko.longToast
 import retrofit2.HttpException
 
@@ -87,10 +85,8 @@ class MapViewModel : ScopedViewModel() {
         }
 
         disableSpinnerAndWindow(fragment, window, false)
-        val createdProofRequest: GetProofReqResp
         try {
-            createdProofRequest =
-                    SovrApi.instance.createProofReq(token, CreateProofReq(driverDid, ProofRequest())).await()
+            SovrApi.instance.createProofReq(token, CreateProofReq(driverDid, ProofRequest())).await()
         } catch (e: Exception) {
             Log.e("OFFER", e.toString())
             disableSpinnerAndWindow(fragment, window, true)
@@ -100,7 +96,7 @@ class MapViewModel : ScopedViewModel() {
         toastMessage(fragment.requireActivity(), "Waiting for proof.")
         disableSpinnerAndWindow(fragment, window, true)
         try {
-            waitForProof(fragment, createdProofRequest)
+            waitForProof(fragment)
         } catch (e: Exception) {
             Log.e("OFFER", e.toString())
             disableSpinnerAndWindow(fragment, window, true)
@@ -121,7 +117,7 @@ class MapViewModel : ScopedViewModel() {
         driverDid = pairwiseResponse.pairwise[0].their_did
     }
 
-    private suspend fun waitForProof(fragment: Fragment, createdProofRequest: GetProofReqResp) =
+    private suspend fun waitForProof(fragment: Fragment) =
         withContext(Dispatchers.IO) {
             var proofs = SovrApi.instance.getAllProof(token).await()
             var proof: RequestedPredicates? = null
@@ -142,37 +138,42 @@ class MapViewModel : ScopedViewModel() {
             }
             val phone = proof.proof.requested_proof.revealed_attrs.attr1_referent.raw
 
-            launch(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
                 AlertDialog.Builder(fragment.requireContext())
-                    .setTitle("Passenger phone")
+                    .setTitle("Driver phone")
                     .setMessage(phone)
                     .setPositiveButton("Pay!") { dialog, _ ->
-                        launch(Dispatchers.IO) {
-                            BackendApi.instance.pay(PayDto()).await()
+
+                        Log.e("MapViewModel", "In the payment coroutine")
+                        try {
+                            BackendApi.instance.pay(PayDto())
+                        } catch (e: Exception) {
+                            Log.e("MapViewModel", "Error with payment! $e")
+                        } finally {
+                            dialog.dismiss()
                         }
-                        dialog.dismiss()
                     }
                     .setNegativeButton("Dismiss") { dialog, _ -> dialog.dismiss() }
                     .show()
-                //toastMessage(fragment.requireActivity(), phone)
             }
         }
-
-    private suspend fun disableSpinnerAndWindow(fragment: Fragment, window: Window, disable: Boolean) =
-        withContext(Dispatchers.Main) {
-            if (disable) {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                fragment.progress.visibility = View.GONE
-            } else {
-                window.setFlags(
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                )
-                fragment.progress.visibility = View.VISIBLE
-            }
-        }
-
-    private suspend fun toastMessage(activity: Activity, str: String) = withContext(Dispatchers.Main) {
-        activity.longToast(str)
-    }
 }
+
+private suspend fun disableSpinnerAndWindow(fragment: Fragment, window: Window, disable: Boolean) =
+    withContext(Dispatchers.Main) {
+        if (disable) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            fragment.progress.visibility = View.GONE
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+            fragment.progress.visibility = View.VISIBLE
+        }
+    }
+
+private suspend fun toastMessage(activity: Activity, str: String) = withContext(Dispatchers.Main) {
+    activity.longToast(str)
+}
+

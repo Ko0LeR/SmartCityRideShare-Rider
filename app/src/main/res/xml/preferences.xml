@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.preference.PreferenceCategory
+            app:key="wallet_category"
+            app:title="Wallet">
+        <androidx.preference.EditTextPreference
+                app:defaultValue=""
+                app:singleLine="true"
+                app:title="Your wallet"
+                app:key="wallet"/>
+        <androidx.preference.EditTextPreference
+                app:defaultValue=""
+                app:singleLine="true"
+                app:title="Your wallet private key"
+                app:key="wallet_private_key"/>
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

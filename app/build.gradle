@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.tlabs.smartcity.rideshare.ridesharedriver"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    sourceSets {
+        main.java.srcDirs
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+ext {
+    // App dependencies versions
+    constraintLayoutVersion = '2.0.0-alpha3'
+    coordinatorLayoutVersion = '1.0.0'
+    coreTestingVersion = '2.0.0'
+    espressoVersion = '3.1.0'
+    junitVersion = '4.12'
+    uiAutomatorVersion = '2.2.0-alpha4'
+    ktlintVersion = '0.29.0'
+    ktxVersion = '1.0.1'
+    lifecycleVersion = '2.0.0'
+    roomVersion = '2.1.0-alpha03'
+    supportLibraryVersion = '1.0.2'
+    materialLibraryVersion = '1.0.0'
+    legacyLibraryVersion = '1.0.0'
+    recyclerLibraryVersion = '1.0.0'
+    ankoVersion = '0.10.2'
+    mapboxVersion = '6.7.2'
+    mapboxSdkVersion = '4.0.0'
+    mapboxGeocoderVersion = '1.0.0'
+    coroutinesVersion = '1.0.1'
+    picassoVersion = '2.5.2'
+    jwtVersion = '1.1.1'
+    klintVersion = '0.29.0'
+    hockeyAppVersion = '5.1.1'
+    canaryleakVersion = '1.6.2'
+    androidxTestVersion = '1.1.0'
+    kodeinVersion = '6.0.1'
+    retrofitVersion = '2.4.0'
+    okhttpLoggingInterceptor = '3.11.0'
+    retrofitCoroutinesAdapter = '0.9.2'
+    androidXPreference = '1.1.0-alpha02'
+}
+dependencies {
+    // Kotlin
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlinVersion"
+    // UI
+    implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
+    implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+    implementation "androidx.appcompat:appcompat:$supportLibraryVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
+    implementation "androidx.core:core-ktx:$ktxVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacyLibraryVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "com.google.android.material:material:$materialLibraryVersion"
+    implementation "androidx.preference:preference-ktx:$androidXPreference"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+
+    // anko
+    implementation "org.jetbrains.anko:anko-common:$ankoVersion"
+    // mapbox
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:$mapboxVersion"
+    implementation "com.mapbox.mapboxsdk:mapbox-sdk-services:$mapboxSdkVersion"
+    implementation "com.mapbox.mapboxsdk:mapbox-sdk-turf:$mapboxSdkVersion"
+    implementation "com.mapbox.mapboxsdk:mapbox-sdk-geojson:$mapboxSdkVersion"
+    implementation "com.mapbox.mapboxsdk:mapbox-android-geocoder:$mapboxGeocoderVersion"
+    // do not upgrade Play services version because it works incorrectly with Mapbox
+    implementation 'com.google.android.gms:play-services-base:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptor"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofitCoroutinesAdapter"
+    implementation ("com.squareup.okhttp3:okhttp-urlconnection:3.10.0"){
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.android.gms:play-services-base:16.0.1'
+    // Testing dependencies
+    androidTestImplementation "androidx.test.ext:junit:$androidxTestVersion"
+    androidTestImplementation "androidx.test:core:$androidxTestVersion"
+    androidTestImplementation "androidx.test:rules:$androidxTestVersion"
+    androidTestImplementation "androidx.test:runner:$androidxTestVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    testImplementation "junit:junit:$junitVersion"
+}
+apply plugin: 'com.google.gms.google-services'
+

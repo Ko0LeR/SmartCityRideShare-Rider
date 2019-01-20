@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:mapbox="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+                name="okListener"
+                type="android.view.View.OnClickListener"/>
+        <variable
+                name="cancelListener"
+                type="android.view.View.OnClickListener"/>
+        <variable
+                name="stopPollingListener"
+                type="android.view.View.OnClickListener"/>
+    </data>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.tlabs.smartcity.rideshare.ridesharerider.screens.map.MapFragment">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <com.mapbox.mapboxsdk.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="0dp"
+                    app:mapbox_uiLogoGravity="right|top"
+                    mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets"
+                    mapbox:mapbox_cameraZoom="11"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <Button
+                android:text="ADD"
+                android:onClick="@{okListener}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_ok"
+                android:layout_marginTop="75dp"
+                android:layout_gravity="top|end"
+                android:visibility="gone"/>
+        <Button
+                android:text="CLEAR"
+                android:layout_marginTop="75dp"
+                android:onClick="@{cancelListener}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:id="@+id/button_clear"
+                android:visibility="gone"/>
+        <Button
+                android:text="STOP POLLING"
+                android:layout_marginTop="75dp"
+                android:onClick="@{stopPollingListener}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:id="@+id/button_stop"
+                android:visibility="gone"/>
+
+        <RelativeLayout
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@android:color/background_light">
+
+            <ProgressBar
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminateOnly="true"/>
+
+        </RelativeLayout>
+    </FrameLayout>
+</layout>
